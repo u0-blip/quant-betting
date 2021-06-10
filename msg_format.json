@@ -1,0 +1,336 @@
+[{
+    "op": "mcm",
+    "clk": "800374138",
+    "pt": 1577753533880,
+    "mc": [
+      {
+        "id": "1.166870997",
+        "rc": [
+          {
+            "ltp": 3.65,
+            "id": 24619693
+          }
+        ]
+      }
+    ]
+},
+
+{
+    "op": "mcm",
+    "clk": "803185357",
+    "pt": 1577845185010,
+    "mc": [
+      {
+        "id": "1.166870988",
+        "marketDefinition": {
+          "bspMarket": true,
+          "turnInPlayEnabled": false,
+          "persistenceEnabled": false,
+          "marketBaseRate": 6,
+          "eventId": "29636351",
+          "eventTypeId": "7",
+          "numberOfWinners": 3,
+          "bettingType": "ODDS",
+          "marketType": "PLACE",
+          "marketTime": "2020-01-01T02:15:00.000Z",
+          "suspendTime": "2020-01-01T02:15:00.000Z",
+          "bspReconciled": true,
+          "complete": true,
+          "inPlay": false,
+          "crossMatching": false,
+          "runnersVoidable": false,
+          "numberOfActiveRunners": 0,
+          "betDelay": 0,
+          "status": "CLOSED",
+          "settledTime": "2020-01-01T02:18:38.000Z",
+          "runners": [
+            {
+              "adjustmentFactor": 8.36,
+              "status": "REMOVED",
+              "sortPriority": 1,
+              "removalDate": "2019-12-31T04:45:19.000Z",
+              "id": 27379222,
+              "name": "6. Lai See"
+            },
+            {
+              "adjustmentFactor": 3.04,
+              "status": "REMOVED",
+              "sortPriority": 2,
+              "removalDate": "2019-12-31T20:50:18.000Z",
+              "id": 27379225,
+              "name": "10. Standoff"
+            },
+            {
+              "adjustmentFactor": 15.68,
+              "status": "WINNER",
+              "sortPriority": 3,
+              "bsp": 3.35,
+              "id": 27213428,
+              "name": "1. A Beautiful Night"
+            },
+            {
+              "adjustmentFactor": 3.76,
+              "status": "LOSER",
+              "sortPriority": 4,
+              "bsp": 23,
+              "id": 27379218,
+              "name": "2. Always Definite"
+            },
+            {
+              "adjustmentFactor": 12.54,
+              "status": "LOSER",
+              "sortPriority": 5,
+              "bsp": 4.7,
+              "id": 27379219,
+              "name": "3. Amateurish"
+            },
+            {
+              "adjustmentFactor": 25.48,
+              "status": "WINNER",
+              "sortPriority": 6,
+              "bsp": 2.06,
+              "id": 27379220,
+              "name": "4. Bombay Rocket"
+            },
+            {
+              "adjustmentFactor": 3.01,
+              "status": "LOSER",
+              "sortPriority": 7,
+              "bsp": 22.37,
+              "id": 27379221,
+              "name": "5. Chavanne"
+            },
+            {
+              "adjustmentFactor": 29.76,
+              "status": "LOSER",
+              "sortPriority": 8,
+              "bsp": 1.44,
+              "id": 26735617,
+              "name": "7. Marchena"
+            },
+            {
+              "adjustmentFactor": 5.48,
+              "status": "LOSER",
+              "sortPriority": 9,
+              "bsp": 10.34,
+              "id": 27379223,
+              "name": "8. Night Raid"
+            },
+            {
+              "adjustmentFactor": 20.7,
+              "status": "LOSER",
+              "sortPriority": 10,
+              "bsp": 2.35,
+              "id": 27379224,
+              "name": "9. Parlophone"
+            },
+            {
+              "adjustmentFactor": 20.22,
+              "status": "WINNER",
+              "sortPriority": 11,
+              "bsp": 3.27,
+              "id": 27379226,
+              "name": "11. Stormborn"
+            },
+            {
+              "adjustmentFactor": 19.19,
+              "status": "LOSER",
+              "sortPriority": 12,
+              "bsp": 2.52,
+              "id": 27379227,
+              "name": "12. Who Runs The World"
+            }
+          ],
+          "regulators": [
+            "MR_INT"
+          ],
+          "venue": "Flemington",
+          "countryCode": "AU",
+          "discountAllowed": true,
+          "timezone": "Australia/Sydney",
+          "openDate": "2020-01-01T02:15:00.000Z",
+          "version": 3100535681,
+          "name": "To Be Placed",
+          "eventName": "Flem (AUS) 1st Jan"
+        }
+      },
+      {
+        "id": "1.166870999",
+        "rc": [
+          {
+            "ltp": 11,
+            "id": 23630950
+          }
+        ]
+      },
+      {
+        "id": "1.166870989",
+        "marketDefinition": {
+          "bspMarket": true,
+          "turnInPlayEnabled": true,
+          "persistenceEnabled": true,
+          "marketBaseRate": 6,
+          "eventId": "29636351",
+          "eventTypeId": "7",
+          "numberOfWinners": 1,
+          "bettingType": "ODDS",
+          "marketType": "WIN",
+          "marketTime": "2020-01-01T02:15:00.000Z",
+          "suspendTime": "2020-01-01T02:15:00.000Z",
+          "bspReconciled": true,
+          "complete": true,
+          "inPlay": true,
+          "crossMatching": false,
+          "runnersVoidable": false,
+          "numberOfActiveRunners": 0,
+          "betDelay": 1,
+          "status": "CLOSED",
+          "settledTime": "2020-01-01T02:18:37.000Z",
+          "runners": [
+            {
+              "adjustmentFactor": 4.71,
+              "status": "REMOVED",
+              "sortPriority": 1,
+              "removalDate": "2019-12-31T04:45:19.000Z",
+              "id": 27379222,
+              "name": "6. Lai See"
+            },
+            {
+              "adjustmentFactor": 1.53,
+              "status": "REMOVED",
+              "sortPriority": 2,
+              "removalDate": "2019-12-31T20:50:18.000Z",
+              "id": 27379225,
+              "name": "10. Standoff"
+            },
+            {
+              "adjustmentFactor": 8.33,
+              "status": "WINNER",
+              "sortPriority": 3,
+              "bsp": 13.5,
+              "id": 27213428,
+              "name": "1. A Beautiful Night"
+            },
+            {
+              "adjustmentFactor": 1.63,
+              "status": "LOSER",
+              "sortPriority": 4,
+              "bsp": 140,
+              "id": 27379218,
+              "name": "2. Always Definite"
+            },
+            {
+              "adjustmentFactor": 6.25,
+              "status": "LOSER",
+              "sortPriority": 5,
+              "bsp": 22,
+              "id": 27379219,
+              "name": "3. Amateurish"
+            },
+            {
+              "adjustmentFactor": 18.18,
+              "status": "LOSER",
+              "sortPriority": 6,
+              "bsp": 5.15,
+              "id": 27379220,
+              "name": "4. Bombay Rocket"
+            },
+            {
+              "adjustmentFactor": 1.29,
+              "status": "LOSER",
+              "sortPriority": 7,
+              "bsp": 89.52,
+              "id": 27379221,
+              "name": "5. Chavanne"
+            },
+            {
+              "adjustmentFactor": 26.19,
+              "status": "LOSER",
+              "sortPriority": 8,
+              "bsp": 3.45,
+              "id": 26735617,
+              "name": "7. Marchena"
+            },
+            {
+              "adjustmentFactor": 2.43,
+              "status": "LOSER",
+              "sortPriority": 9,
+              "bsp": 65.23,
+              "id": 27379223,
+              "name": "8. Night Raid"
+            },
+            {
+              "adjustmentFactor": 12.5,
+              "status": "LOSER",
+              "sortPriority": 10,
+              "bsp": 6.88,
+              "id": 27379224,
+              "name": "9. Parlophone"
+            },
+            {
+              "adjustmentFactor": 12.04,
+              "status": "LOSER",
+              "sortPriority": 11,
+              "bsp": 10.81,
+              "id": 27379226,
+              "name": "11. Stormborn"
+            },
+            {
+              "adjustmentFactor": 11.11,
+              "status": "LOSER",
+              "sortPriority": 12,
+              "bsp": 7.52,
+              "id": 27379227,
+              "name": "12. Who Runs The World"
+            }
+          ],
+          "regulators": [
+            "MR_NJ",
+            "MR_INT"
+          ],
+          "venue": "Flemington",
+          "countryCode": "AU",
+          "discountAllowed": true,
+          "timezone": "Australia/Sydney",
+          "openDate": "2020-01-01T02:15:00.000Z",
+          "version": 3100535701,
+          "name": "R1 1000m 2yo",
+          "eventName": "Flem (AUS) 1st Jan"
+        }
+      },
+      {
+        "id": "1.166870993",
+        "rc": [
+          {
+            "ltp": 640,
+            "id": 27379230
+          },
+          {
+            "ltp": 5.1,
+            "id": 17203685
+          },
+          {
+            "ltp": 34,
+            "id": 27379231
+          },
+          {
+            "ltp": 18,
+            "id": 11669670
+          },
+          {
+            "ltp": 9.4,
+            "id": 16312114
+          }
+        ]
+      },
+      {
+        "id": "1.166870991",
+        "rc": [
+          {
+            "ltp": 3,
+            "id": 26982075
+          }
+        ]
+      }
+    ]
+  }]

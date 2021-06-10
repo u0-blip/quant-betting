@@ -11,69 +11,42 @@ import matplotlib.pyplot as plt
 from sklearn.neighbors import KNeighborsRegressor
 from sklearn.multioutput import MultiOutputRegressor
 
-rerun_dir = False
+from sqlitedict import SqliteDict
+from time import time
 
-f_name_pickle = 'checkpoints/f_name.pickle'
-if rerun_dir or not os.path.exists(f_name_pickle):
+f_name_db = SqliteDict('checkpoints/filenames.sqlite', autocommit=True)
+
+re_run_dir = False
+re_run_data = True
+
+
+def get_month_fname(i, m):
     base_dir = './BASIC/2020'
-    months = ['Jan']
-    # , 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug'
-    day_dirs = []
-
-
-    for i, m in enumerate(months):
-        _, num_days = calendar.monthrange(2020, i+1)
-        day_dirs += ['/'.join([base_dir, m, str(day)]) for day in range(1, num_days+1)[:1]]
-
-    f_names = []
-    for d in day_dirs:
+    _, num_days = calendar.monthrange(2020, i+1)
+    f_month_name = []
+    for d in ['/'.join([base_dir, m, str(day)]) for day in range(1, num_days+1)]:
         if os.path.exists(d):
             for f in os.scandir(d):
                 f_name = f.path.split('\\')[-1]
-                f_names.append(f.path + '\\' + f_name + '.bz2')
-        else:
-            pass
-    with open(f_name_pickle, 'wb') as f_name_f:
-        pickle.dump(f_names, f_name_f)
-else:
-    with open(f_name_pickle, 'rb') as f_name_f:
-        f_names = pickle.load(f_name_f)
+                f_month_name.append(f.path + '\\' + f_name + '.bz2')
+
+    return f_month_name
+
+print('Start processing files...')
+f_name_pickle = 'checkpoints/f_name.pickle'
+months = ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug']
+
+f_names = []
+
+for i, m in enumerate(months):
+    if re_run_dir or m not in f_name_db:
+        f_name_db[m] = get_month_fname(i, m)
+    f_names += f_name_db[m]
+
+f_name_db.close()
 
 #%% Getting the dataframe
 from time import time
-
-
-def process_msg_by_line(msg, df_runner_market):
-    time = float(msg['pt'])/1000
-    mc = msg['mc']
-
-    for mc1 in mc:
-        marketId = mc1['id']
-
-        if 'marketDefinition' in mc1:
-            event_id = mc1['marketDefinition']['eventId']
-
-            runners = mc1['marketDefinition']['runners']
-            for r in runners:
-                runnerId = r['id']
-                # recording the winner status
-                if str(runnerId) + str(marketId) not in df_runner_market.index:
-                    df_runner_market.loc[str(runnerId) + str(marketId)] = [marketId, runnerId, None, None]
-                
-                if r['status'] == 'WINNER':
-                    df_runner_market.loc[runnerId, marketId]['win'] = True
-                elif r['status'] == 'LOSER':
-                    df_runner_market.loc[str(runnerId) + str(marketId)]['win'] = False
-        elif 'rc' in mc1: 
-            for runner in mc1['rc']:
-                runnerId = runner['id']
-                bid = float(runner['ltp'])
-                if type(df_runner_market.loc[str(runnerId) + str(marketId)]['bid']) != type(None):
-                    df_runner_market.loc[str(runnerId) + str(marketId)]['bid'] = df_runner_market.loc[str(runnerId) + str(marketId)]['bid'].append(pd.Series([bid], index=[datetime.fromtimestamp(time)]))
-                else:
-                    df_runner_market.loc[str(runnerId) + str(marketId)]['bid'] = pd.Series([bid], index=[datetime.fromtimestamp(time)])
-
-
 
 def process_msg_by_line1(msg, df_runner_market, df_market):
     time = float(msg['pt'])/1000
@@ -89,10 +62,10 @@ def process_msg_by_line1(msg, df_runner_market, df_market):
 
             if marketId not in df_market:
                 df_market[marketId] = {
-                    'name': market_def['name'],
-                    'venue': market_def['venue'],
-                    'eventName': market_def['eventName'],
-                    'numberOfWinners': market_def['numberOfWinners']
+                    'name': market_def['name'] if 'name' in market_def else None,
+                    'venue': market_def['venue'] if 'venue' in market_def else None,
+                    'eventName': market_def['eventName'] if 'eventName' in market_def else None,
+                    'numberOfWinners': market_def['numberOfWinners'] if 'numberOfWinners' in market_def else None
                 }
             for r in runners:
                 runnerId = r['id']
@@ -115,19 +88,20 @@ def process_msg_by_line1(msg, df_runner_market, df_market):
 
 
 
-re_run = False
 
-runner_market_f = 'runner_market.pickle'
+runner_market_f = 'checkpoints/runner_market.pickle'
 
 df_runner_market = {}
 
-if re_run or not os.path.exists(runner_market_f):
+print('Start processing data...')
+start = time()
+if re_run_data or not os.path.exists(runner_market_f):
     start = time()
 
     df_market = {}
 
     for i, f_name in enumerate(f_names):
-        if re_run:
+        if re_run_data:
             with bz2.open(f_name, 'rb') as bet:
                 read = bet.read().decode('utf-8')
                 read_lines = [ele.strip() for ele in read.split('\n')]
@@ -137,6 +111,7 @@ if re_run or not os.path.exists(runner_market_f):
                         process_msg_by_line1(msg, df_runner_market, df_market)
 
     df_runner_market = pd.DataFrame.from_dict(df_runner_market, orient='index')
+    
     df_runner_market.index.names = ('runnerId', 'marketId')
     df_market = pd.DataFrame.from_dict(df_market, orient='index')
 
@@ -155,6 +130,9 @@ if re_run or not os.path.exists(runner_market_f):
 else:
     with open(runner_market_f, 'rb') as rmf:
         df_runner_market, df_market = pickle.load(rmf)
+        fill_bid_arr_size = df_runner_market.describe().loc['75%'].values[0] + 5
+
+print('data processing took: ', time() - start)
 
 
 market_list = df_runner_market.index.unique(level='marketId')
@@ -198,7 +176,7 @@ test_label = np.vstack(test_market.win.values)
 #%% use Kneighbors regressor
 
 
-
+print('Start training models...')
 knn = KNeighborsRegressor()
 regr = MultiOutputRegressor(knn)
 
@@ -241,42 +219,31 @@ print(' xgb pred mse ', mse_pred)
 
 
 #%% calculating winnings
-
+print('Start calculating winnings...')
 test_market['marketId'] = test_market.index
 test_market['pred_win_runner'] = [test_market.iloc[i]['runner_id'][w] for i, w in enumerate(pred_winner)]
+df_runner_market['market_id'] = df_runner_market.index.get_level_values('marketId')
 test_market_merged = test_market.merge(df_runner_market, left_on=['marketId', 'pred_win_runner'], right_on=['market_id', 'runner_id'])
 #%%
-all_winning = test_market_merged[['bid_arr_y', 'win_y']].apply(lambda x: x[0][-1] if x[1] else 0, axis=1)
+all_winning = test_market_merged[['bid_arr_y', 'win_y']].apply(lambda x: x[0][-1] if x[1] else 0, axis=1).to_numpy() - 1
 sum_winning = sum(all_winning)
 
+def moving_average(x, w):
+    return np.convolve(x, np.ones(w), 'valid') / w
 
-#%%
-winnings = []
-def cal_winnings(df_runner_market):
-    winning = -1
-    for id_r, runner in runner_to_market.items():
-        for id_m, market in runner.items():
-            if 'status' in market and 'fav_odds' in market_to_runner[id_m] and market_to_runner[id_m]['fav_odds'] == id_r:
-                if market['status'] and 'price' in market:
-                    winning += market['price'][-1] 
-                else:
-                    winning -= 0
-    return winning
+sum_period = 5
+sum_winning = [sum(all_winning[current: current+sum_period]) for current in range(0, len(all_winning), sum_period)]
 
+print('total winnings: ', np.sum(sum_winning) - len(sum_winning), ' over ', len(all_winning), ' races. ')
+plt.figure()
+plt.title('Moving average')
+plt.plot(moving_average(all_winning - 1, 5))
+plt.savefig('Moving average plot')
 
-winning = cal_winnings(df_runner_market)
-winnings.append(winning)
-    # print('winning is: ', winning)
-
-with open('./all.res', 'w') as f:
-    json.dump(winnings, f)
-
-print('total: ', np.sum(winnings))
-plt.plot(winnings)
-plt.show()
-
-# print(market_to_runner)
-# print(runner_to_market)
+plt.figure()
+plt.title('Sum of wining')
+plt.plot(np.array(sum_winning) - 5, '*')
+plt.savefig('sum winning plot')
 
 # print(winning)
 
